@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -21,6 +24,7 @@ public class ProfesseurController {
     public String listProfessors(Model model) {
         List<Professeur> professeurs = professeurService.getAllProfesseurs();
         model.addAttribute("professeurs", professeurs);
+        model.addAttribute("specialites", professeurService.getAllSpecialities());
         return "professeur-list";
     }
 
@@ -31,13 +35,47 @@ public class ProfesseurController {
         return "professeur-form";
     }
 
-    // Handle adding a professor
     @PostMapping("/save")
-    public String saveProfesseur(@ModelAttribute Professeur professeur) {
+    public String saveProfesseur(@ModelAttribute("professeur") Professeur professeur,
+                                 @RequestParam(value = "imageFile", required = false) MultipartFile imageFile)
+            throws IOException {
+
+        if (professeur.getCode() != null) {
+            // Get existing professor
+            Professeur existingProfesseur = professeurService.getProfesseurById(professeur.getCode().toString());
+            if (existingProfesseur != null) {
+                // Preserve existing image if no new image is uploaded
+                if (imageFile == null || imageFile.isEmpty()) {
+                    professeur.setImage(existingProfesseur.getImage());
+                } else {
+                    processAndSetImage(professeur, imageFile);
+                }
+            }
+        } else if (imageFile != null && !imageFile.isEmpty()) {
+            processAndSetImage(professeur, imageFile);
+        }
+
+        // Set default values for new professors
+        if (professeur.getIsProfesseur() == null) {
+            professeur.setIsProfesseur(true);
+        }
+        if (professeur.getIsAdmin() == null) {
+            professeur.setIsAdmin(false);
+        }
+
         professeurService.saveProfesseur(professeur);
         return "redirect:/professeurs";
     }
 
+    private void processAndSetImage(Professeur professeur, MultipartFile imageFile) throws IOException {
+        byte[] imageBytes = imageFile.getBytes();
+        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+        String contentType = imageFile.getContentType();
+        if (contentType == null) {
+            contentType = "image/jpeg";
+        }
+        professeur.setImage("data:" + contentType + ";base64," + base64Image);
+    }
     // Show form for editing a professor
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable("id") String id, Model model) {
@@ -51,5 +89,13 @@ public class ProfesseurController {
     public String deleteProfesseur(@PathVariable("id") String id) {
         professeurService.deleteProfesseur(id);
         return "redirect:/professeurs";
+    }
+
+    @GetMapping("/search")
+    @ResponseBody
+    public List<Professeur> searchProfesseurs(
+            @RequestParam(required = false) String searchTerm,
+            @RequestParam(required = false) String specialite) {
+        return professeurService.searchProfesseurs(searchTerm, specialite);
     }
 }

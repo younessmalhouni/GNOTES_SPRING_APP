@@ -1,38 +1,55 @@
 package com.example.GNotesAPP12.Model;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Element {
 
     @Id
-    @Column(name = "id_element") // Match DB column naming conventions
-    private String idElement;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_element")
+    private Long idElement;
 
+    @Column(nullable = false)
     private String nomElement;
+
+    @Column(nullable = false)
     private double coefficient;
 
-    @ManyToOne
-    @JoinColumn(name = "module_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "module_id", referencedColumnName = "code_module")
     private Module module;
 
-    @ManyToOne
-    @JoinColumn(name = "professeur_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "code_prof", referencedColumnName = "code")
     private Professeur professeur;
 
     @OneToMany(mappedBy = "element", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Modalite_Evaluation> modalites;
+    private List<Modalite_Evaluation> modalites = new ArrayList<>();
 
     @OneToMany(mappedBy = "element", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<NoteElement> noteElements;
+    private List<NoteElement> noteElements = new ArrayList<>();
 
-    // Getters and Setters
-    public String getIdElement() {
+    // Helper method to manage bidirectional relationship
+    public void addModalite(Modalite_Evaluation modalite) {
+        modalites.add(modalite);
+        modalite.setElement(this);
+    }
+
+    // Helper method to remove modalite
+    public void removeModalite(Modalite_Evaluation modalite) {
+        modalites.remove(modalite);
+        modalite.setElement(null);
+    }
+
+    // Getters and setters
+    public Long getIdElement() {
         return idElement;
     }
 
-    public void setIdElement(String idElement) {
+    public void setIdElement(Long idElement) {
         this.idElement = idElement;
     }
 

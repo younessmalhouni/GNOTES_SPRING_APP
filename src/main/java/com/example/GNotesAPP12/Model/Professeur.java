@@ -12,12 +12,12 @@ import java.util.List;
 public class Professeur extends Utilisateur {
     private String specialite;
 
-    @OneToMany(mappedBy = "professeur", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "professeur", cascade = CascadeType.ALL)
     private List<Element> elements;
 
     // Constructors, Getters, and Setters
-    public Professeur(Long code, String nom, String prenom, String nomUtilisateur, String motDePasse, String specialite, Boolean isProfesseur, Boolean isAdmin) {
-        super(code, nom, prenom, nomUtilisateur, motDePasse, isProfesseur, isAdmin);
+    public Professeur(Long code, String nom, String prenom, String nomUtilisateur, String motDePasse, String specialite, Boolean isProfesseur, Boolean isAdmin,String email, String image) {
+        super(code, nom, prenom, nomUtilisateur, motDePasse, isProfesseur, isAdmin, email, image);
         this.specialite = specialite;
     }
 

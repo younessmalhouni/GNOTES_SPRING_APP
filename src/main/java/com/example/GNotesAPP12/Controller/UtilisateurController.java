@@ -1,5 +1,4 @@
 package com.example.GNotesAPP12.Controller;
-
 import com.example.GNotesAPP12.Model.Professeur;
 import com.example.GNotesAPP12.Model.Utilisateur;
 import com.example.GNotesAPP12.Service.UtilisateurService;
@@ -31,6 +30,7 @@ public class UtilisateurController {
         } else {
             session.setAttribute("loggedInUser", existingUser);
             model.addAttribute("nomUtilisateur", existingUser.getNomUtilisateur());
+
             if (Boolean.TRUE.equals(existingUser.getIsAdmin())) {
                 return "adminTemplate"; // Admin-specific JSP
             } else if (Boolean.TRUE.equals(existingUser.getIsProfesseur())) {

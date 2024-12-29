@@ -9,7 +9,8 @@ public class Etudiant {
 
     @Id
     @Column(name = "code_etudiant")
-    private String codeEtudiant;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long codeEtudiant;
 
     @Column(name = "nom_etudiant", nullable = false)
     private String nomEtudiant;
@@ -17,18 +18,23 @@ public class Etudiant {
     @Column(name = "prenom_etudiant", nullable = false)
     private String prenomEtudiant;
 
+    private String email;
+    @Lob
+    @Column(name = "image", columnDefinition = "LONGTEXT")
+    private String image;
+
 
     @ManyToOne
     @JoinColumn(name = "filliere_id", nullable = false)
     private Filliere filliere;
 
-    @OneToMany(mappedBy = "etudiant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "etudiant", cascade = CascadeType.ALL)
     private List<NoteModalite> noteModalites;
 
-    @OneToMany(mappedBy = "etudiant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "etudiant", cascade = CascadeType.ALL)
     private List<NoteElement> noteElements;
 
-    @OneToMany(mappedBy = "etudiant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "etudiant", cascade = CascadeType.ALL)
     private List<NoteModule> noteModules;
 
     @ManyToOne
@@ -39,11 +45,11 @@ public class Etudiant {
     public Etudiant() {}
 
     // Getters and Setters
-    public String getCodeEtudiant() {
+    public Long getCodeEtudiant() {
         return codeEtudiant;
     }
 
-    public void setCodeEtudiant(String codeEtudiant) {
+    public void setCodeEtudiant(Long codeEtudiant) {
         this.codeEtudiant = codeEtudiant;
     }
 
@@ -101,5 +107,21 @@ public class Etudiant {
 
     public void setNoteModules(List<NoteModule> noteModules) {
         this.noteModules = noteModules;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

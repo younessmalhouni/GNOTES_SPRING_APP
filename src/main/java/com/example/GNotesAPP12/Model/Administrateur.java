@@ -9,8 +9,8 @@ import jakarta.persistence.Entity;
 public class Administrateur extends Utilisateur{
 
     //Contructeur
-    public Administrateur(Long code, String nom, String prenom, String nomUtilisateur, String motDePasse, Boolean isProfesseur, Boolean isAdmin) {
-        super(code, nom, prenom, nomUtilisateur, motDePasse,isProfesseur, isAdmin);
+    public Administrateur(Long code, String nom, String prenom, String nomUtilisateur, String motDePasse, Boolean isProfesseur, Boolean isAdmin, String email, String image) {
+        super(code, nom, prenom, nomUtilisateur, motDePasse,isProfesseur, isAdmin, email, image);
     }
     public Administrateur() {
     }

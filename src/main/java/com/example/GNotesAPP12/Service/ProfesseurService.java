@@ -28,4 +28,22 @@ public class ProfesseurService {
     public void deleteProfesseur(String id) {
         professeurRepo.deleteById(id);
     }
+
+    public List<String> getAllSpecialities() {
+        return professeurRepo.findAllSpecialities();
+    }
+
+    public List<Professeur> searchProfesseurs(String searchTerm, String specialite) {
+        // If both parameters are empty or null, return all professors
+        if ((searchTerm == null || searchTerm.trim().isEmpty()) &&
+                (specialite == null || specialite.trim().isEmpty())) {
+            return professeurRepo.findAll();
+        }
+
+        // Trim the search term if it exists
+        String trimmedSearchTerm = searchTerm == null ? "" : searchTerm.trim();
+        String trimmedSpecialite = specialite == null ? "" : specialite.trim();
+
+        return professeurRepo.searchProfesseurs(trimmedSearchTerm, trimmedSpecialite);
+    }
 }

@@ -15,8 +15,28 @@ public class Utilisateur {
     private String motDePasse;
     private Boolean isProfesseur;
     private Boolean isAdmin;
+    private String email;
+    @Lob
+    @Column(name = "image", columnDefinition = "LONGTEXT")
+    private String image;
 
-    public Utilisateur(Long code, String nom, String prenom, String nomUtilisateur, String motDePasse, Boolean isProfesseur, Boolean isAdmin) {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Utilisateur(Long code, String nom, String prenom, String nomUtilisateur, String motDePasse, Boolean isProfesseur, Boolean isAdmin, String email, String image) {
         this.code = code;
         this.nom = nom;
         this.prenom = prenom;
@@ -24,6 +44,8 @@ public class Utilisateur {
         this.motDePasse = motDePasse;
         this.isProfesseur = isProfesseur;
         this.isAdmin = isAdmin;
+        this.email = email;
+        this.image = image;
     }
 
     public Utilisateur() {

@@ -26,8 +26,9 @@ public class EtudiantController {
     private SemestreService semestreService;
 
     @GetMapping
-    public String listEtudiants(Model model) {
-        List<Etudiant> Etudiants = etudiantService.getAllEtudiants();
+    public String listEtudiants(Model model, @RequestParam(required = false) String search,
+                                @RequestParam(required = false) Long filliereId, @RequestParam(required = false) Long semestreId) {
+        List<Etudiant> Etudiants = etudiantService.searchEtudiants(search, filliereId, semestreId);
         model.addAttribute("etudiants", Etudiants);
         model.addAttribute("fillieres", filliereService.getAllFillieres());
         model.addAttribute("semestres", semestreService.getAllSemestres());

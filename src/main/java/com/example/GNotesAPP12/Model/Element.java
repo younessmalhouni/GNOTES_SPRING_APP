@@ -100,4 +100,13 @@ public class Element {
     public void setNoteElements(List<NoteElement> noteElements) {
         this.noteElements = noteElements;
     }
+
+    public NoteElement getNoteElementByEtudiant(Etudiant etudiant) {
+        for (NoteElement noteElement : noteElements) {
+            if (noteElement.getEtudiant().equals(etudiant)) {
+                return noteElement;
+            }
+        }
+        return null;
+    }
 }

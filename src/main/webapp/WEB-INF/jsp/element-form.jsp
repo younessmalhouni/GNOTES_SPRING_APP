@@ -12,6 +12,14 @@
 <body>
 <div class="container py-5">
     <h2 class="mb-4">${element.idElement == null ? 'Ajouter' : 'Modifier'} Élément</h2>
+
+    <!-- Error message display -->
+    <c:if test="${not empty errorMessage}">
+        <div class="alert alert-danger" role="alert">
+                ${errorMessage}
+        </div>
+    </c:if>
+
     <form action="${pageContext.request.contextPath}/elements/save" method="post">
         <input type="hidden" name="idElement" value="${element.idElement}"/>
         <div class="mb-3">
@@ -20,11 +28,12 @@
         </div>
         <div class="mb-3">
             <label for="coefficient" class="form-label">Coefficient</label>
-            <input type="number" step="0.01" class="form-control" id="coefficient" name="coefficient" value="${element.coefficient}" required>
+            <input type="number" step="0.01" class="form-control" id="coefficient" name="coefficient" value="${element.coefficient}"  min="0" max="${sommeCoefModule}" required>
         </div>
         <div class="mb-3">
             <label for="module" class="form-label">Module</label>
-            <select class="form-select" id="module" name="module.idModule" required>
+            <select class="form-select" id="module" name="module.codeModule" required>
+                <option value="">Sélectionner un Module</option>
                 <c:forEach var="module" items="${modules}">
                     <option value="${module.codeModule}" ${module.codeModule == element.module.codeModule ? 'selected' : ''}>${module.nomModule}</option>
                 </c:forEach>
@@ -32,7 +41,8 @@
         </div>
         <div class="mb-3">
             <label for="professeur" class="form-label">Professeur</label>
-            <select class="form-select" id="professeur" name="professeur.idProfesseur" required>
+            <select class="form-select" id="professeur" name="professeur.code" required>
+                <option value="">Sélectionner un Professeur</option>
                 <c:forEach var="professeur" items="${professeurs}">
                     <option value="${professeur.code}" ${professeur.code == element.professeur.code ? 'selected' : ''}>${professeur.nom} ${professeur.prenom}</option>
                 </c:forEach>
@@ -44,7 +54,7 @@
                 <c:forEach var="modalite" items="${element.modalites}" varStatus="status">
                     <div class="input-group mb-2">
                         <input type="text" class="form-control" name="modalites[${status.index}].type_Modalite" value="${modalite.type_Modalite}" placeholder="Type d'Évaluation" required>
-                        <input type="number" step="0.01" class="form-control" name="modalites[${status.index}].coeffecient" value="${modalite.coeffecient}" placeholder="Coefficient" required>
+                        <input type="number" step="0.01" class="form-control" name="modalites[${status.index}].coeffecient" value="${modalite.coeffecient}" placeholder="Coefficient" min="1" max="100" required>
                         <button type="button" class="btn btn-danger" onclick="removeModalite(this)">Supprimer</button>
                     </div>
                 </c:forEach>
@@ -64,7 +74,7 @@
         div.className = 'input-group mb-2';
         div.innerHTML = `
             <input type="text" class="form-control" name="modalites[\${index}].type_Modalite" placeholder="Type d'Évaluation" required>
-            <input type="number" step="0.01" class="form-control" name="modalites[\${index}].coeffecient" placeholder="Coefficient" required>
+            <input type="number" step="0.01" class="form-control" name="modalites[\${index}].coeffecient" placeholder="Coefficient" min="1" max="100" required>
             <button type="button" class="btn btn-danger" onclick="removeModalite(this)">Supprimer</button>
         `;
         container.appendChild(div);

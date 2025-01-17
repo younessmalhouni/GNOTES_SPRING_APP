@@ -21,6 +21,9 @@ public class Filliere {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateCreation;
 
+    @Column
+    private String description;
+
     @OneToMany(mappedBy = "filliere")
     private List<Etudiant> etudiants;
 
@@ -53,6 +56,14 @@ public class Filliere {
         this.dateCreation = dateCreation;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public List<Etudiant> getEtudiants() {
         return etudiants;
     }
@@ -72,10 +83,11 @@ public class Filliere {
     // Constructors
     public Filliere() {}
 
-    public Filliere(Long idFilliere, String nomFilliere, Date dateCreation) {
+    public Filliere(Long idFilliere, String nomFilliere, Date dateCreation, String description) {
         this.idFilliere = idFilliere;
         this.nomFilliere = nomFilliere;
         this.dateCreation = dateCreation;
+        this.description = description;
     }
 
 }

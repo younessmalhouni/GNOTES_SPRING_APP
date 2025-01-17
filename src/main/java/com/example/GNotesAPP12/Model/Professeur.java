@@ -1,24 +1,26 @@
 package com.example.GNotesAPP12.Model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
 @DiscriminatorValue("Professeur")
 public class Professeur extends Utilisateur {
+    @Column(unique = true)
+    private String IdentifiantProfesseur;
+
     private String specialite;
+
 
     @OneToMany(mappedBy = "professeur", cascade = CascadeType.ALL)
     private List<Element> elements;
 
     // Constructors, Getters, and Setters
-    public Professeur(Long code, String nom, String prenom, String nomUtilisateur, String motDePasse, String specialite, Boolean isProfesseur, Boolean isAdmin,String email, String image) {
-        super(code, nom, prenom, nomUtilisateur, motDePasse, isProfesseur, isAdmin, email, image);
+    public Professeur(Long code, String nom, String prenom, String nomUtilisateur, String motDePasse, String specialite,String IdentifiantProfesseur , Boolean isProfesseur, Boolean isAdmin,String email, String image) {
+        super(code, nom, prenom,email, image);
         this.specialite = specialite;
+        this.IdentifiantProfesseur = IdentifiantProfesseur;
     }
 
     public Professeur() {
@@ -39,4 +41,18 @@ public class Professeur extends Utilisateur {
     public void setElements(List<Element> elements) {
         this.elements = elements;
     }
+
+    public String getIdentifiantProfesseur() {
+        return IdentifiantProfesseur;
+    }
+
+    public void setIdentifiantProfesseur(String IdentifiantProfesseur) {
+        this.IdentifiantProfesseur = IdentifiantProfesseur;
+    }
+
+    @Override
+    public List<Compte> getComptes() {
+        return super.getComptes();
+    }
+
 }

@@ -3,6 +3,7 @@ package com.example.GNotesAPP12.Controller;
 import com.example.GNotesAPP12.Model.Element;
 import com.example.GNotesAPP12.Model.Modalite_Evaluation;
 import com.example.GNotesAPP12.Model.Module;
+import com.example.GNotesAPP12.Repo.NoteElementRepo;
 import com.example.GNotesAPP12.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,8 @@ public class ModuleController {
     private ElementService elementService;
     @Autowired
     private ProfesseurService professeurService;
+    @Autowired
+    private NoteElementService noteElementService;
 
     @GetMapping
     public String listModule(Model model) {
@@ -53,10 +56,12 @@ public class ModuleController {
     @PostMapping("/save")
     public String saveModule(@ModelAttribute Module module) {
         if (module.getElements() == null) {
-            module.setElements(new ArrayList<>());
-        }
+            module.setElements(new ArrayList<>());}
         for (Element element : module.getElements()) {
             element.setModule(module);
+            if (element.getProfesseur() != null) {
+                element.setProfesseur(professeurService.getProfesseurById(element.getProfesseur().getCode().toString()));
+            }
             if (element.getModalites() == null) {
                 element.setModalites(new ArrayList<>());
             }
@@ -68,8 +73,6 @@ public class ModuleController {
                 modalite.setElement(element);
             }
         }
-
-       
         moduleService.saveModule(module);
         return "redirect:/modules";
     }
@@ -80,6 +83,8 @@ public class ModuleController {
         if (module.getElements() == null) {
             module.setElements(new ArrayList<>());
         }
+        Double SommeCoefModule = moduleService.SommeCoefModule(module.getCodeModule());
+        model.addAttribute("SommeCoefModule", SommeCoefModule);
         model.addAttribute("module", module);
         model.addAttribute("fillieres", filliereService.getAllFillieres());
         model.addAttribute("semestres", semestreService.getAllSemestres());
@@ -91,5 +96,24 @@ public class ModuleController {
     public String deleteModule(@PathVariable("id") String id) {
         moduleService.deleteModule(id);
         return "redirect:/modules";
+    }
+
+    @GetMapping("/VoirNotes/{id}")
+    public String VoirNotes(@PathVariable("id") String id, Model model,
+                            @RequestParam(required = false, defaultValue = "") Long filliereId,
+                            @RequestParam(required = false, defaultValue = "") Long semestreId,
+                            @RequestParam(required = false, defaultValue = "") String searchTerm
+                             ) {
+        Module module = moduleService.getModuleById(id);
+        model.addAttribute("module", module);
+        model.addAttribute("elements", module.getElements());
+        model.addAttribute("etudiants", moduleService.EtudiantsOfModule(module.getCodeModule(),semestreId,filliereId , searchTerm));
+        model.addAttribute("fillieres", filliereService.getAllFillieres());
+        model.addAttribute("semestres", semestreService.getAllSemestres());
+        model.addAttribute("moduleService", moduleService);
+
+        model.addAttribute("noteElementService",noteElementService);
+
+        return "module-notes";
     }
 }

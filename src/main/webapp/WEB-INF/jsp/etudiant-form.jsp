@@ -22,6 +22,12 @@
                    value="${etudiant.nomEtudiant}" placeholder="Entrez le nom" required>
         </div>
         <div class="mb-3">
+            <label for="CNE" class="form-label">CNE</label>
+            <input type="text" id="CNE" name="CNE" class="form-control"
+                   value="${etudiant.CNE}" placeholder="Entrez le CNE" required>
+        </div>
+
+        <div class="mb-3">
             <label for="prenomEtudiant" class="form-label">Prénom</label>
             <input type="text" id="prenomEtudiant" name="prenomEtudiant" class="form-control"
                    value="${etudiant.prenomEtudiant}" placeholder="Entrez le prénom" required>

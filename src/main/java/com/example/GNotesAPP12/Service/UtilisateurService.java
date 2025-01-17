@@ -11,10 +11,8 @@ public class UtilisateurService {
     @Autowired
     private UtilisateurRepo utilisateurRepo;
 
-    public Utilisateur login(String nomUtilisateur, String motDePasse) {
-        return utilisateurRepo.findByNomUtilisateurAndMotDePasse(nomUtilisateur, motDePasse);
+    public Utilisateur getUtilisateurByCode(Long code) {
+        return utilisateurRepo.findUtilisateurByCode(code);
     }
-    public Utilisateur findByNomUtilisateur(String nomUtilisateur) {
-        return utilisateurRepo.findByNomUtilisateur(nomUtilisateur);
-    }
+
 }

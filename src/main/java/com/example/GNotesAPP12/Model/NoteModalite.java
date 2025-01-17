@@ -10,6 +10,9 @@ public class NoteModalite {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private boolean isValide=false;
+    private boolean isAbsent=false;
+
     @ManyToOne
     @JoinColumn(name = "etudiant_id", nullable = false)
     private Etudiant etudiant;
@@ -60,5 +63,21 @@ public class NoteModalite {
 
     public void setNoteModalite(Double noteModalite) {
         this.noteModalite = noteModalite;
+    }
+
+    public boolean isValide() {
+        return isValide;
+    }
+
+    public void setValide(boolean isValide) {
+        this.isValide = isValide ;
+    }
+
+    public boolean isAbsent() {
+        return isAbsent;
+    }
+
+    public void setAbsent(boolean isAbsent) {
+        this.isAbsent = isAbsent;
     }
 }

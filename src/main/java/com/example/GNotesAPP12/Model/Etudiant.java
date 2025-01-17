@@ -12,6 +12,9 @@ public class Etudiant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codeEtudiant;
 
+    @Column(unique = true)
+    private String CNE;
+
     @Column(name = "nom_etudiant", nullable = false)
     private String nomEtudiant;
 
@@ -45,6 +48,15 @@ public class Etudiant {
     public Etudiant() {}
 
     // Getters and Setters
+
+    public String getCNE() {
+        return CNE;
+    }
+
+
+    public void setCNE(String CNE) {
+        this.CNE = CNE;
+    }
     public Long getCodeEtudiant() {
         return codeEtudiant;
     }
@@ -124,4 +136,14 @@ public class Etudiant {
     public void setImage(String image) {
         this.image = image;
     }
+
+    public NoteElement NoteElementByEtudiant(Element element) {
+        for (NoteElement noteElement : noteElements) {
+            if (noteElement.getElement().equals(element)) {
+                return noteElement;
+            }
+        }
+        return null;
+    }
+
 }

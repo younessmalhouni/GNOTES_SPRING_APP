@@ -45,6 +45,14 @@ public class ElementService {
         );
     }
 
+    public Double SommeCoefElement(Long elementCode) {
+        return elementRepository.SommeCoefElement(elementCode);
+    }
+
+    public Element ElementExistant(Long id) {
+        return elementRepository.ElementExistant(id);
+    }
+
 
 }
 

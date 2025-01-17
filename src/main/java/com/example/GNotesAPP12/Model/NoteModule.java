@@ -2,6 +2,8 @@ package com.example.GNotesAPP12.Model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "note_module")
 public class NoteModule {

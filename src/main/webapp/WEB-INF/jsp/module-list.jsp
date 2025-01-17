@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -148,6 +147,10 @@
                            class="btn btn-danger btn-custom"
                            onclick="return confirm('Are you sure you want to delete this module?');">
                             <i class="fas fa-trash-alt me-1"></i> Delete
+                        </a>
+
+                        <a href="modules/VoirNotes/${module.codeModule}" class="btn btn-warning btn-custom">
+                            <i class="fas fa-edit me-1"></i> Voir Notes
                         </a>
                     </div>
                 </div>

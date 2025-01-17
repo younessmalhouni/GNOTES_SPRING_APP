@@ -31,8 +31,8 @@
 <div class="container mt-5">
     <h1 class="mb-4">
         <c:choose>
-            <c:when test="${module.codeModule == null}">Add New Module</c:when>
-            <c:otherwise>Edit Module</c:otherwise>
+            <c:when test="${module.codeModule == null}">Ajouter un nouveau Module</c:when>
+            <c:otherwise>Modifier Module</c:otherwise>
         </c:choose>
     </h1>
 
@@ -222,8 +222,74 @@
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
 <script>
     let elementIndex = ${module.elements.size() > 0 ? module.elements.size() : 0};
+
+    // Function to calculate sum of coefficients
+    const calculateSum = (inputs) => {
+        return Array.from(inputs).reduce((sum, input) => sum + (parseFloat(input.value) || 0), 0);
+    };
+
+    // Validate element coefficients
+    const validateElementCoefficients = (form) => {
+        const elementCoefficients = form.querySelectorAll('input[name$="].coefficient"]');
+        const sum = calculateSum(elementCoefficients);
+        const isValid = sum <= 100;
+
+        elementCoefficients.forEach(input => {
+            if (!isValid) {
+                input.setCustomValidity('Total element coefficients must not exceed 100');
+            } else {
+                input.setCustomValidity('');
+            }
+        });
+
+        return isValid;
+    };
+
+    // Validate modality coefficients for each element
+    const validateModalityCoefficients = (form) => {
+        const elements = form.querySelectorAll('.element-item');
+        let isValid = true;
+
+        elements.forEach(element => {
+            const modalityCoefficients = element.querySelectorAll('input[name$="].coeffecient"]');
+            const sum = calculateSum(modalityCoefficients);
+
+            modalityCoefficients.forEach(input => {
+                if (sum > 100) {
+                    input.setCustomValidity('Total modality coefficients for an element must not exceed 100');
+                    isValid = false;
+                } else {
+                    input.setCustomValidity('');
+                }
+            });
+        });
+
+        return isValid;
+    };
+
+    // Add input event listeners for real-time validation
+    const addInputListeners = (form) => {
+        // Listen for changes on element coefficients
+        form.querySelectorAll('input[name$="].coefficient"]').forEach(input => {
+            input.addEventListener('input', () => {
+                validateElementCoefficients(form);
+                form.classList.add('was-validated');
+            });
+        });
+
+        // Listen for changes on modality coefficients
+        form.querySelectorAll('input[name$="].coeffecient"]').forEach(input => {
+            input.addEventListener('input', () => {
+                validateModalityCoefficients(form);
+                form.classList.add('was-validated');
+            });
+        });
+    };
 
     // Add new element
     document.getElementById('add-element').addEventListener('click', () => {
@@ -256,21 +322,20 @@
                                min="1"
                                max="100"
                                required/>
-                        <div class="invalid-feedback">Le Coffecient doit etre entre 1 et 100.</div>
+                        <div class="invalid-feedback">Le Coefficient doit être entre 1 et 100 et la somme ne doit pas dépasser 100.</div>
                     </div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="professeur" class="form-label required-field">Professeur</label>
                     <select class="form-select" id="professeur" name="elements[\${elementIndex}].professeur.code" required>
-                        <option value="">Selectioner un Professeur</option>
+                        <option value="">Sélectionner un Professeur</option>
                         <c:forEach var="professeur" items="${professeurs}">
-                            <option value="${professeur.code}"
-                                    <c:if test="${element.professeur != null && element.professeur.code == professeur.code}">selected</c:if>>
+                            <option value="${professeur.code}">
                                 <c:out value="${professeur.nom}"/>
                             </option>
                         </c:forEach>
                     </select>
-                    <div class="invalid-feedback">Selectionner un professeur.</div>
+                    <div class="invalid-feedback">Sélectionner un professeur.</div>
                 </div>
 
                 <div class="modalities-container mt-3">
@@ -287,6 +352,7 @@
                                     <label class="form-label required-field">Coefficient</label>
                                     <input type="number" step="0.01" class="form-control" min="1" max="100" value="1"
                                            name="elements[\${elementIndex}].modalites[0].coeffecient" required/>
+                                    <div class="invalid-feedback">Le Coefficient doit être entre 1 et 100 et la somme ne doit pas dépasser 100.</div>
                                 </div>
                             </div>
                             <button type="button" class="btn btn-danger btn-sm mt-2 remove-modality">
@@ -304,6 +370,22 @@
                 </button>
             </div>`;
         container.insertAdjacentHTML('beforeend', elementHtml);
+
+        // Add validation listeners to the new element
+        const form = document.querySelector('.needs-validation');
+        if (form) {
+            const newElement = form.querySelector('.element-item:last-child');
+            if (newElement) {
+                const coefficientInput = newElement.querySelector('input[name$="].coefficient"]');
+                if (coefficientInput) {
+                    coefficientInput.addEventListener('input', () => {
+                        validateElementCoefficients(form);
+                        form.classList.add('was-validated');
+                    });
+                }
+            }
+        }
+
         elementIndex++;
     });
 
@@ -332,7 +414,7 @@
                                    min="1"
                                    max="100"
                                    required/>
-                            <div class="invalid-feedback">Le Coffecient doit etre entre 1 et 100.</div>
+                            <div class="invalid-feedback">Le Coefficient doit être entre 1 et 100 et la somme ne doit pas dépasser 100.</div>
                         </div>
                     </div>
                     <button type="button" class="btn btn-danger btn-sm mt-2 remove-modality">
@@ -341,20 +423,45 @@
                 </div>`;
 
             modalitiesContainer.insertAdjacentHTML('beforeend', modalityHtml);
+
+            // Add validation listeners to the new modality
+            const form = document.querySelector('.needs-validation');
+            if (form) {
+                const newModality = modalitiesContainer.lastElementChild;
+                if (newModality) {
+                    const coefficientInput = newModality.querySelector('input[name$="].coeffecient"]');
+                    if (coefficientInput) {
+                        coefficientInput.addEventListener('input', () => {
+                            validateModalityCoefficients(form);
+                            form.classList.add('was-validated');
+                        });
+                    }
+                }
+            }
         }
     });
 
     // Remove modality
     document.addEventListener('click', (event) => {
         if (event.target.classList.contains('remove-modality')) {
-            event.target.closest('.modality-item').remove();
+            const modalityItem = event.target.closest('.modality-item');
+            const form = document.querySelector('.needs-validation');
+            modalityItem.remove();
+            if (form) {
+                validateModalityCoefficients(form);
+            }
         }
     });
 
     // Remove element
     document.addEventListener('click', (event) => {
         if (event.target.classList.contains('remove-element')) {
-            event.target.closest('.element-item').remove();
+            const elementItem = event.target.closest('.element-item');
+            const form = document.querySelector('.needs-validation');
+            elementItem.remove();
+            if (form) {
+                validateElementCoefficients(form);
+            }
         }
     });
 
@@ -362,12 +469,21 @@
     (() => {
         'use strict';
         const forms = document.querySelectorAll('.needs-validation');
+
         Array.from(forms).forEach(form => {
+            // Add input listeners for real-time validation
+            addInputListeners(form);
+
+            // Validate on form submission
             form.addEventListener('submit', event => {
-                if (!form.checkValidity()) {
+                const elementsValid = validateElementCoefficients(form);
+                const modalitiesValid = validateModalityCoefficients(form);
+
+                if (!form.checkValidity() || !elementsValid || !modalitiesValid) {
                     event.preventDefault();
                     event.stopPropagation();
                 }
+
                 form.classList.add('was-validated');
             }, false);
         });

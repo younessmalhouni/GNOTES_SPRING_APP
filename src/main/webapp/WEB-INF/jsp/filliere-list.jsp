@@ -5,36 +5,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List of Fillières</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- AOS Animation Library -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
 
     <style>
         :root {
-            --primary-color: #4e73df;
-            --secondary-color: #858796;
-            --success-color: #1cc88a;
+            --primary-gradient: linear-gradient(45deg, #2980b9, #2c3e50);
+            --hover-gradient: linear-gradient(45deg, #3498db, #2980b9);
+            --card-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
         }
 
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f1 100%);
+            background: #f8f9fa;
+            padding-top: 30px;
         }
 
         .card {
             border: none;
             border-radius: 15px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             transition: all 0.4s ease;
             overflow: hidden;
         }
 
         .card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-10px);
+            box-shadow: var(--card-shadow);
         }
 
         .card::before {
@@ -44,11 +42,11 @@
             left: 0;
             width: 100%;
             height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+            background: var(--primary-gradient);
         }
 
         .page-title {
-            color: var(--primary-color);
+            color: #2c3e50;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -63,11 +61,11 @@
             left: 0;
             width: 50px;
             height: 3px;
-            background: var(--primary-color);
+            background: var(--primary-gradient);
         }
 
         .add-btn {
-            background: linear-gradient(45deg, var(--primary-color), var(--success-color));
+            background: var(--primary-gradient);
             border: none;
             padding: 12px 25px;
             border-radius: 25px;
@@ -75,8 +73,9 @@
         }
 
         .add-btn:hover {
+            background: var(--hover-gradient);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--card-shadow);
         }
 
         .card-actions {
@@ -106,7 +105,7 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background: var(--primary-color);
+            background: var(--primary-gradient);
             color: white;
             width: 30px;
             height: 30px;
@@ -118,16 +117,54 @@
         }
 
         .creation-date {
-            color: var(--secondary-color);
+            color: #6c757d;
             font-size: 0.9rem;
             margin-top: 10px;
         }
+
+        .description-text {
+            color: #666;
+            font-size: 0.95rem;
+            margin: 15px 0;
+            line-height: 1.6;
+            position: relative;
+            padding-left: 20px;
+            border-left: 3px solid #2980b9;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 0 10px 10px 0;
+            margin-top: 20px;
+        }
+
+        .stats-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-right: 10px;
+            background: rgba(41, 128, 185, 0.1);
+            color: #2980b9;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            font-size: 1.4rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
+    <jsp:include page="header.jsp"/>
 </head>
 <body>
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-5" data-aos="fade-down">
-        <h2 class="page-title">List of Fillières</h2>
+        <h2 class="page-title">Liste Des Fillieres</h2>
         <a href="${pageContext.request.contextPath}/fillieres/add" class="btn add-btn text-white">
             <i class="fas fa-plus-circle me-2"></i>Ajouter Filliere
         </a>
@@ -135,18 +172,36 @@
 
     <div class="row g-4">
         <c:forEach var="filliere" items="${fillieres}" varStatus="status">
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="${status.index * 100}">
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="${status.index * 100}">
                 <div class="card h-100">
                     <div class="card-number">${status.index + 1}</div>
                     <div class="card-body p-4">
                         <h5 class="card-title fw-bold mb-3">
-                            <i class="fas fa-graduation-cap me-2 text-primary"></i>
+                            <i class="fas fa-graduation-cap"></i>
                                 ${filliere.nomFilliere}
                         </h5>
+
+                        <div class="description-text">
+                            <i class="fas fa-quote-left me-2 text-primary"></i>
+                                ${filliere.description}
+                        </div>
+
+                        <div class="mt-3">
+                            <span class="stats-badge">
+                                <i class="fas fa-users me-1"></i>
+                                ${filliere.etudiants.size()} Students
+                            </span>
+                            <span class="stats-badge">
+                                <i class="fas fa-book me-1"></i>
+                                ${filliere.modules.size()} Modules
+                            </span>
+                        </div>
+
                         <div class="creation-date">
                             <i class="far fa-calendar-alt me-2"></i>
                             Created on ${filliere.dateCreation}
                         </div>
+
                         <div class="card-actions mt-4">
                             <div class="d-flex justify-content-between gap-2">
                                 <a href="${pageContext.request.contextPath}/fillieres/edit/${filliere.idFilliere}"
@@ -167,9 +222,7 @@
     </div>
 </div>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<!-- AOS Animation Library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <script>
     AOS.init({

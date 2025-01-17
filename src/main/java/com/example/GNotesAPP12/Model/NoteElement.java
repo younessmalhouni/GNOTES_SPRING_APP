@@ -11,6 +11,8 @@ public class NoteElement {
 
     private double noteElement;
 
+    private boolean isValide=false;
+
     @ManyToOne
     @JoinColumn(name = "id_element", nullable = false) // Match DB column naming conventions
     private Element element;
@@ -50,5 +52,13 @@ public class NoteElement {
 
     public void setEtudiant(Etudiant etudiant) {
         this.etudiant = etudiant;
+    }
+
+    public boolean getIsValide() {
+        return isValide;
+    }
+
+    public void setValide(boolean isValide) {
+        this.isValide = isValide;
     }
 }

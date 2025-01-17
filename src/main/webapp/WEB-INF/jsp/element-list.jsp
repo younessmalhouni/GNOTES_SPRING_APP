@@ -6,19 +6,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des Éléments</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
 
     <style>
         :root {
-            --primary-color: #4e73df;
+            --primary-color: #5f98da;
             --secondary-color: #858796;
             --success-color: #1cc88a;
         }
 
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f1 100%);
+            padding-top: 0 !important; /* Empêche le décalage par d'autres headers */
+            margin: 0;
+        }
+
+        .navbar-custom {
+            background: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color);
         }
 
         .card {
@@ -35,14 +48,43 @@
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
 
-        .card::before {
+        .progress-circle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--primary-color);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-circle::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            border: 3px solid #e9ecef;
+            border-top: 3px solid var(--primary-color);
+            animation: rotate 1s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover .progress-circle::before {
+            opacity: 1;
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .page-title {
@@ -52,16 +94,6 @@
             letter-spacing: 2px;
             position: relative;
             padding-bottom: 10px;
-        }
-
-        .page-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background: var(--primary-color);
         }
 
         .add-btn {
@@ -85,31 +117,10 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
 
-        .form-floating .form-control,
-        .form-floating .form-select {
+        .form-control, .form-select {
             border-radius: 10px;
             border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .coefficient-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: linear-gradient(45deg, var(--primary-color), var(--success-color));
-            border-radius: 20px;
-            padding: 5px 15px;
-            font-weight: 500;
-        }
-
-        .card-actions {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-        }
-
-        .card:hover .card-actions {
-            opacity: 1;
-            transform: translateY(0);
+            padding: 0.75rem 1rem;
         }
 
         .btn-custom {
@@ -124,25 +135,49 @@
             transform: translateY(-2px);
         }
 
-        .modal-content {
-            border-radius: 15px;
-            border: none;
+        .card-actions {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
         }
 
-        .modal-header {
-            background: linear-gradient(45deg, var(--primary-color), var(--success-color));
-            color: white;
-            border-radius: 15px 15px 0 0;
-        }
-
-        .btn-close {
-            filter: brightness(0) invert(1);
+        .card:hover .card-actions {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
+
     <jsp:include page="header.jsp"/>
 </head>
 <body>
-<div class="container py-5">
+<!-- Navbar autonome -->
+<nav class="navbar navbar-expand-lg navbar-custom mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-graduation-cap me-2"></i>
+            Gestion des Éléments
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="${pageContext.request.contextPath}/elements">
+                        <i class="fas fa-list me-1"></i> Liste
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/elements/add">
+                        <i class="fas fa-plus-circle me-1"></i> Nouveau
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-4">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-5" data-aos="fade-down">
         <h2 class="page-title">Liste des Éléments</h2>
@@ -152,7 +187,7 @@
     </div>
 
     <!-- Filtres -->
-    <div class="filter-card card p-4" data-aos="fade-up">
+    <div class="filter-card card p-4 mb-4" data-aos="fade-up">
         <div class="row g-3">
             <div class="col-md-4">
                 <div class="form-floating">
@@ -196,8 +231,9 @@
                 <c:forEach var="element" items="${elements}" varStatus="status">
                     <div class="col-md-4" data-aos="fade-up" data-aos-delay="${status.index * 100}">
                         <div class="card h-100">
-                            <div class="coefficient-badge text-white">
-                                Coefficient: ${element.coefficient}
+                            <!-- Nouveau design pour le coefficient -->
+                            <div class="progress-circle">
+                                    ${element.coefficient}
                             </div>
                             <div class="card-body p-4">
                                 <h5 class="card-title fw-bold mb-3">
@@ -301,11 +337,10 @@
         $('#moduleFilter, #professeurFilter').on('change', filterElements);
     });
 
-    // Confirmation de suppression
     function confirmDelete(elementId) {
         const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
         const deleteButton = document.getElementById('confirmDeleteButton');
-        deleteButton.href = '${pageContext.request.contextPath}/elements/delete/' + elementId;
+        deleteButton.setAttribute('href', '${pageContext.request.contextPath}/elements/delete/' + elementId);
         modal.show();
     }
 </script>

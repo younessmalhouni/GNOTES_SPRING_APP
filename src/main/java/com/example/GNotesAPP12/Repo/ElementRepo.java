@@ -1,6 +1,7 @@
 package com.example.GNotesAPP12.Repo;
 
 import com.example.GNotesAPP12.Model.Element;
+import com.example.GNotesAPP12.Model.Modalite_Evaluation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +22,12 @@ public interface ElementRepo extends JpaRepository<Element, String> {
             @Param("profId") String profId,
             @Param("searchTerm") String searchTerm
     );
+
+
+    @Query("select sum(m.coeffecient) from Modalite_Evaluation m where m.element.idElement = :elementCode")
+    Double SommeCoefElement(Long elementCode);
+
+    @Query("select el from Element el where el.idElement=:id")
+    Element ElementExistant(Long id);
+
 }

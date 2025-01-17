@@ -1,88 +1,227 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Header</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+<style>
+    :root {
+        --primary-gradient: linear-gradient(45deg, #2980b9, #2c3e50);
+        --hover-gradient: linear-gradient(45deg, #3498db, #2980b9);
+        --card-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+        --sidebar-width: 280px;
+        --header-height: 70px;
+        --transition: all 0.3s ease;
+    }
+
+    .navbar-custom {
+        background: var(--primary-gradient);
+        height: var(--header-height);
+        padding: 0 25px;
+        box-shadow: var(--card-shadow);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .navbar-brand {
+        color: white !important;
+        font-size: 1.6rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .navbar-brand i {
+        font-size: 2rem;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: var(--header-height);
+        left: calc(-1 * var(--sidebar-width));
+        height: calc(100% - var(--header-height));
+        width: var(--sidebar-width);
+        background: white;
+        transition: var(--transition);
+        box-shadow: var(--card-shadow);
+        z-index: 1000;
+        opacity: 0;
+        overflow-y: auto;
+        border-radius: 0 20px 20px 0;
+    }
+
+    .sidebar.show {
+        left: 0;
+        opacity: 1;
+    }
+
+    .sidebar-header {
+        text-align: center;
+        padding: 25px 0;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #2c3e50;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+        margin-bottom: 15px;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .sidebar .nav-link {
+        color: #2c3e50;
+        padding: 15px 25px;
+        display: flex;
+        align-items: center;
+        border-radius: 12px;
+        margin: 8px 15px;
+        transition: var(--transition);
+        font-weight: 500;
+    }
+
+    .sidebar .nav-link i {
+        margin-right: 15px;
+        width: 24px;
+        text-align: center;
+        font-size: 1.2rem;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .sidebar .nav-link:hover {
+        background: var(--primary-gradient);
+        color: white;
+        transform: translateX(5px);
+    }
+
+    .sidebar .nav-link:hover i {
+        background: none;
+        -webkit-text-fill-color: white;
+    }
+
+    .toggle-button {
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 10px;
+        border-radius: 12px;
+        transition: var(--transition);
+        position: fixed;
+        top: 15px;
+        left: 25px;
+        z-index: 1001;
+    }
+
+    .toggle-button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.05);
+    }
+
+    #hideSidebarBtn {
+        display: none;
+    }
+
+    .profile-button {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 8px 20px;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .profile-button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .profile-image1 {
+        border: 3px solid rgba(255, 255, 255, 0.8);
+        transition: var(--transition);
+    }
+
+    .profile-button:hover .profile-image {
+        transform: scale(1.05);
+    }
+
+    .profile-button span {
+        color: white;
+        font-weight: 500;
+    }
+
+    .logout-btn {
+        background-color: white;
+        color: #2c3e50;
+        border-radius: 12px;
+        padding: 8px 25px;
+        font-weight: 600;
+        transition: var(--transition);
+    }
+
+    .logout-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--card-shadow);
+    }
+
+    @media (max-width: 768px) {
         .sidebar {
-            position: fixed;
-            top: 0;
-            left: -250px;
-            height: 100%;
-            width: 250px;
-            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
-            padding-top: 20px;
-            transition: left 0.3s ease, opacity 0.3s ease;
-            color: white;
-            opacity: 0;
+            width: 100%;
+            left: -100%;
+            border-radius: 0;
         }
-        .sidebar.show {
-            left: 0;
-            opacity: 1;
+
+        .navbar-custom {
+            padding: 0 15px;
         }
-        .sidebar-header {
-            text-align: center;
-            padding: 10px 0;
-            font-size: 1.5rem;
-            font-weight: bold;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .sidebar .nav-link {
-            color: white;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-        }
-        .sidebar .nav-link i {
-            margin-right: 10px;
-        }
-        .sidebar .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-        }
+
         .toggle-button {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            z-index: 1000;
+            left: 15px;
         }
-        #hideSidebarBtn {
+
+        .profile-button span {
             display: none;
         }
-        .navbar-custom {
-            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
-            color: white;
+
+        .profile-button {
+            padding: 5px;
         }
-    </style>
-</head>
-<body>
+
+        .logout-btn {
+            padding: 8px 15px;
+        }
+    }
+
+    /* Add padding to the body to prevent content from being hidden behind the fixed navbar */
+    body {
+        padding-top: var(--header-height);
+    }
+</style>
+
 <nav class="navbar navbar-expand-lg navbar-custom">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="#">
-            <i class="fas fa-graduation-cap me-2"></i>
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/utilisateur/loginUser">
+            <i class="fas fa-graduation-cap"></i>
             GNotes
         </a>
-        <div class="d-flex align-items-center">
-            <button class="profile-button btn text-white d-flex align-items-center me-3"
+        <div class="d-flex align-items-center gap-3">
+            <button class="profile-button btn d-flex align-items-center gap-2"
                     onclick="window.location.href='${pageContext.request.contextPath}/utilisateur/profile'">
-                <img src="${pageContext.request.contextPath}/resources/static/profile.jpeg"
-                     alt="Profile" class="rounded-circle me-2" width="40" height="40">
+                <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                </svg>
                 <span>${nomUtilisateur}</span>
             </button>
-            <button class="btn btn-light" onclick="window.location.href='${pageContext.request.contextPath}/logout'">
-                <i class="fas fa-sign-out-alt me-2"></i>Logout
+            <button class="logout-btn btn" onclick="window.location.href='${pageContext.request.contextPath}/utilisateur/logout'">
+                <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
             </button>
         </div>
     </div>
@@ -96,12 +235,8 @@
 </button>
 
 <div class="sidebar" id="sidebar">
-    <div class="sidebar-header">Navigation</div>
+    <div class="sidebar-header">Menu Principal</div>
     <nav class="nav flex-column">
-
-        <a class="nav-link" href="${pageContext.request.contextPath}/utilisateur/loginUser">
-            <i class="fas fa-home"></i>Acceuil
-        </a>
 
         <a class="nav-link" href="${pageContext.request.contextPath}/professeurs">
             <i class="fas fa-chalkboard-teacher"></i>Professeurs
@@ -116,16 +251,11 @@
             <i class="fas fa-user-graduate"></i>Étudiants
         </a>
         <a class="nav-link" href="${pageContext.request.contextPath}/elements">
-            <i class="fas fa-user-graduate"></i>Elements
+            <i class="fas fa-cube"></i>Éléments
         </a>
     </nav>
 </div>
 
-<div class="content">
-    <!-- Main content goes here -->
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     document.getElementById('showSidebarBtn').addEventListener('click', function() {
         document.getElementById('sidebar').classList.add('show');
@@ -139,5 +269,3 @@
         document.getElementById('hideSidebarBtn').style.display = 'none';
     });
 </script>
-</body>
-</html>

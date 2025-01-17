@@ -14,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/elements")
@@ -56,6 +58,9 @@ public class ElementController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable("id") String id, Model model) {
         Element element = elementService.getElementById(id);
+        Module module = element.getModule();
+        Double sommeCoefModule = moduleService.SommeCoefModule(module.getCodeModule());
+        model.addAttribute("sommeCoefModule", sommeCoefModule);
         model.addAttribute("element", element);
         model.addAttribute("professeurs", professeurService.getAllProfesseurs());
         model.addAttribute("modules", moduleService.getAllModules());
@@ -70,40 +75,55 @@ public class ElementController {
 
     @Transactional
     @PostMapping("/save")
-    public String saveElement(Element element) {
+    public String saveElement(Element element, Model model) {
         try {
-            // Vérifier et charger le module
+            // Get current sum of coefficients for the module
+            Double sommeCoefModule = moduleService.SommeCoefModule(element.getModule().getCodeModule());
+
+            // Check if this is an edit (element exists) or new element
+            Double AncienCoefficient = 0.0;
+            if (element.getIdElement() != null) {  // If element has ID, it's an edit
+                Element AncienElement = elementService.ElementExistant(element.getIdElement());
+                if (AncienElement != null) {
+                    AncienCoefficient = AncienElement.getCoefficient();
+                }
+            }
+
+            // Adjust total by subtracting old coefficient and adding new one
+            double TotalCoef = sommeCoefModule - AncienCoefficient + element.getCoefficient();
+
             if (element.getModule() != null && element.getModule().getCodeModule() != null) {
-                Module existingModule = moduleService.getModuleById(element.getModule().getCodeModule().toString());
-                if (existingModule == null) {
-                    throw new RuntimeException("Module not found");
-                }
-                element.setModule(existingModule);
+                Module module = moduleService.getModuleById(element.getModule().getCodeModule().toString());
+                element.setModule(module);
             }
 
-            // Vérifier et charger le professeur
             if (element.getProfesseur() != null && element.getProfesseur().getCode() != null) {
-                Professeur existingProf = professeurService.getProfesseurById(element.getProfesseur().getCode().toString());
-                if (existingProf == null) {
-                    throw new RuntimeException("Professeur not found");
-                }
-                element.setProfesseur(existingProf);
+                Professeur professeur = professeurService.getProfesseurById(element.getProfesseur().getCode().toString());
+                element.setProfesseur(professeur);
             }
 
-            // Gérer les modalités d'évaluation si elles existent
             if (element.getModalites() != null) {
                 for (Modalite_Evaluation modalite : element.getModalites()) {
                     modalite.setElement(element);
                 }
             }
 
-            // Sauvegarder l'élément
-            elementService.saveElement(element);
-            return "redirect:/elements";
+            if (TotalCoef <= 100) {
+                elementService.saveElement(element);
+                return "redirect:/elements";
+            } else {
+                model.addAttribute("errorMessage", "La somme des coefficients des éléments du module ne peut pas dépasser 100");
+                model.addAttribute("element", element);
+                model.addAttribute("professeurs", professeurService.getAllProfesseurs());
+                model.addAttribute("modules", moduleService.getAllModules());
+                return "element-form";
+            }
         } catch (Exception e) {
-            // Log l'erreur et rediriger vers une page d'erreur ou le formulaire avec un message
-            e.printStackTrace();
-            return "redirect:/elements/add?error=true";
+            model.addAttribute("errorMessage", "Une erreur s'est produite lors de l'enregistrement: " + e.getMessage());
+            model.addAttribute("element", element);
+            model.addAttribute("professeurs", professeurService.getAllProfesseurs());
+            model.addAttribute("modules", moduleService.getAllModules());
+            return "element-form";
         }
     }
 

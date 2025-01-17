@@ -23,6 +23,12 @@
             <input type="text" class="form-control" id="prenom" name="prenom" value="${professeur.prenom}" required>
         </div>
         <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="${professeur.email}" required>
+        </div>
+
+
+        <div class="mb-3">
             <label for="specialite" class="form-label">Spécialité</label>
             <input type="text" class="form-control" id="specialite" name="specialite" value="${professeur.specialite}" required>
         </div>

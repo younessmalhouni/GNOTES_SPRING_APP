@@ -20,6 +20,9 @@ L'application repose sur une architecture MVC bien structurée avec **Spring Boo
 - **Persistance (Spring Data JPA, Hibernate)** : Interaction avec la base de données MySQL.
 - **Sécurité (Spring Security)** : Gestion des rôles et authentification.
 
+
+  ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/8ff478ea-0e5f-46c3-b434-f9591366fbfe/842d4830-a3fd-4b08-833c-d62014d60955/image.png)
+
 ## 🛠️ Technologies Utilisées
 - **Backend** : Java EE, Spring Boot, Spring Security, Hibernate
 - **Frontend** : JSP, Bootstrap, JavaScript

@@ -21,7 +21,8 @@ L'application repose sur une architecture MVC bien structurée avec **Spring Boo
 - **Sécurité (Spring Security)** : Gestion des rôles et authentification.
 
 
-  <img width="719" alt="image" src="https://github.com/user-attachments/assets/2a2fc87a-a026-4a61-8f86-0464bca06bf5" />
+  ![image](https://github.com/user-attachments/assets/b4d635a2-41fe-4651-853b-0e8b496ef92e)
+
 
 
 ## 🛠️ Technologies Utilisées
@@ -29,6 +30,9 @@ L'application repose sur une architecture MVC bien structurée avec **Spring Boo
 - **Frontend** : JSP, Bootstrap, JavaScript
 - **Base de données** : MySQL
 - **Gestion de dépendances** : Maven
+
+  ![image](https://github.com/user-attachments/assets/c1410224-3d3c-479d-a4e5-1b3402ad7746)
+
 
 ## 📂 Structure du Projet
 ```

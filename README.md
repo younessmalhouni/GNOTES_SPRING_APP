@@ -45,7 +45,7 @@ The application follows a well-structured **MVC architecture** using **Spring Bo
 ```
 
 ## 📸 Screenshots
-_Add screenshots here to illustrate the interface_
+
 
 ## 🏁 Installation & Execution
 ### 1️⃣ Prerequisites

@@ -66,7 +66,7 @@ The application follows a well-structured **MVC architecture** using **Spring Bo
 ### 2️⃣ Clone the Project
 
 ```bash
-git clone https://github.com/your-repo/GNotes_SPRING_APP.git
+[git clone https://github.com/your-repo/GNotes_SPRING_APP.git](https://github.com/younessmalhouni/GNOTES_SPRING_APP.git)
 cd GNotes_SPRING_APP
 ```
 

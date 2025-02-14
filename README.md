@@ -1,85 +1,92 @@
-# 📘 GNotes - Application de Gestion des Notes Universitaires
+# 📘 GNotes - University Grade Management Application
 
 ## 📌 Description
-GNotes est une application web développée en **Spring Boot** permettant la gestion des notes des étudiants dans un cadre académique. Elle offre une interface intuitive pour les administrateurs et professeurs, permettant la gestion des étudiants, modules, évaluations et résultats.
+GNotes is a web application developed with **Spring Boot** for managing student grades in an academic setting. It provides an intuitive interface for administrators and professors, enabling the management of students, modules, assessments, and results.
 
-## 🚀 Fonctionnalités Principales
-- 🔐 **Authentification sécurisée** (Spring Security - Administrateurs & Professeurs)
-- 🏫 **Gestion des utilisateurs** (CRUD : Ajout, Modification, Suppression)
-- 📚 **Gestion des modules et éléments pédagogiques**
-- 📝 **Saisie et validation des notes**
-- 📊 **Calcul automatique des moyennes et résultats**
-- 📄 **Exportation des notes au format PDF**
-- 🛡️ **Sécurisation des accès avec Spring Security**
+## 🚀 Key Features
+- 🔐 **Secure Authentication** (Spring Security - Administrators & Professors)
+- 🏫 **User Management** (CRUD: Add, Edit, Delete)
+- 📚 **Module and Course Management**
+- 📝 **Grade Entry and Validation**
+- 📊 **Automatic Calculation of Averages and Results**
+- 📄 **Export Grades to PDF**
+- 🛡️ **Access Security with Spring Security**
 
 ## 🏗️ Architecture
-L'application repose sur une architecture MVC bien structurée avec **Spring Boot** :
-- **Vue (JSP + Bootstrap)** : Interface utilisateur moderne et responsive.
-- **Contrôleur (Spring MVC)** : Gère les requêtes HTTP et la logique métier.
-- **Service Layer** : Implémente les règles métiers.
-- **Persistance (Spring Data JPA, Hibernate)** : Interaction avec la base de données MySQL.
-- **Sécurité (Spring Security)** : Gestion des rôles et authentification.
+The application follows a well-structured **MVC architecture** using **Spring Boot**:
+- **View (JSP + Bootstrap)**: Modern and responsive user interface.
+- **Controller (Spring MVC)**: Handles HTTP requests and business logic.
+- **Service Layer**: Implements business rules.
+- **Persistence (Spring Data JPA, Hibernate)**: Interacts with the MySQL database.
+- **Security (Spring Security)**: Manages roles and authentication.
 
+![image](https://github.com/user-attachments/assets/b4d635a2-41fe-4651-853b-0e8b496ef92e)
 
-  ![image](https://github.com/user-attachments/assets/b4d635a2-41fe-4651-853b-0e8b496ef92e)
+## 🛠️ Technologies Used
+- **Backend**: Java EE, Spring Boot, Spring Security, Hibernate
+- **Frontend**: JSP, Bootstrap, JavaScript
+- **Database**: MySQL
+- **Dependency Management**: Maven
 
+![image](https://github.com/user-attachments/assets/c1410224-3d3c-479d-a4e5-1b3402ad7746)
 
-
-## 🛠️ Technologies Utilisées
-- **Backend** : Java EE, Spring Boot, Spring Security, Hibernate
-- **Frontend** : JSP, Bootstrap, JavaScript
-- **Base de données** : MySQL
-- **Gestion de dépendances** : Maven
-
-  ![image](https://github.com/user-attachments/assets/c1410224-3d3c-479d-a4e5-1b3402ad7746)
-
-
-## 📂 Structure du Projet
+## 📂 Project Structure
 ```
 📦 GNotes_SPRING_APP
  ┣ 📂 src/main/java/com/example/GNotesAPP12
- ┃ ┣ 📂 Config (Configuration de sécurité, AuthenticationFilter)
- ┃ ┣ 📂 Controller (Gestion des utilisateurs, modules, notes...)
- ┃ ┣ 📂 Service (Logique métier)
- ┃ ┣ 📂 Repository (Accès aux données avec JPA/Hibernate)
- ┃ ┣ 📂 Model (Entités du projet)
- ┣ 📂 src/main/resources (Templates JSP, fichiers de configuration)
- ┣ 📜 pom.xml (Dépendances Maven)
+ ┃ ┣ 📂 Config (Security configuration, AuthenticationFilter)
+ ┃ ┣ 📂 Controller (User, Module, Grade management, etc.)
+ ┃ ┣ 📂 Service (Business logic)
+ ┃ ┣ 📂 Repository (Data access using JPA/Hibernate)
+ ┃ ┣ 📂 Model (Project entities)
+ ┣ 📂 src/main/resources (JSP templates, configuration files)
+ ┣ 📜 pom.xml (Maven dependencies)
  ┣ 📜 README.md (Documentation)
 ```
 
-## 📸 Captures d'Écran
-_Ajoutez ici des captures d'écran pour illustrer l'interface_
+## 📸 Screenshots
+_Add screenshots here to illustrate the interface_
 
-## 🏁 Installation & Exécution
-### 1️⃣ Prérequis
+## 🏁 Installation & Execution
+### 1️⃣ Prerequisites
 - Java 17+
-- MySQL
+- XAMPP (or an equivalent tool)
+- phpMyAdmin (or an equivalent database management tool)
 - Maven
 
-### 2️⃣ Cloner le Projet
-```bash
-git clone https://github.com/votre-repo/GNotes_SPRING_APP.git
-cd GNotes_SPRING_APP
-```
-
-### 3️⃣ Configurer la Base de Données
-Créer une base de données MySQL :
+### 2️⃣ Setting Up the Database
+1. **Install and Run XAMPP** (or an equivalent tool) to start the MySQL server.
+2. Open **phpMyAdmin** (or an equivalent database management tool).
+3. Create a new database:
 ```sql
 CREATE DATABASE gestion_notes;
 ```
-Mettre à jour `application.properties` avec vos identifiants MySQL.
+4. Update `application.properties` with your credentials in the following format:
+```properties
+spring.application.name=GNotesAPP12
+server.port=8082
+spring.datasource.url=jdbc:mysql://localhost:3306/gestion_notes
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+spring.jpa.hibernate.ddl-auto=update
+```
 
-### 4️⃣ Lancer l’Application
+### 3️⃣ Clone the Project
+```bash
+git clone https://github.com/your-repo/GNotes_SPRING_APP.git
+cd GNotes_SPRING_APP
+```
+
+### 4️⃣ Run the Application
 ```bash
 mvn spring-boot:run
 ```
-Accéder à l’interface : `http://localhost:8080`
+Access the interface at: `http://localhost:8082`
 
-## 📜 Licence
-Ce projet est sous licence MIT.
+## 📜 License
+This project is licensed under the MIT License.
 
 ---
-👨‍💻 *Développé par :* **MALHOUNI YOUNESS**  
-🎓 *Encadré par :* **Pr. GHERABI Noreddine**
+👨‍💻 *Developed by:* [**Youness Malhouni**](https://www.linkedin.com/in/youness-malhouni/)  
+
 

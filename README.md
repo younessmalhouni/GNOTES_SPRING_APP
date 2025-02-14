@@ -23,7 +23,9 @@ The application follows a well-structured **MVC architecture** using **Spring Bo
 - **Service Layer**: Implements business rules.
 - **Persistence (Spring Data JPA, Hibernate)**: Interacts with the MySQL database.
 - **Security (Spring Security)**: Manages roles and authentication.
-![image](https://github.com/user-attachments/assets/c1410224-3d3c-479d-a4e5-1b3402ad7746)
+
+![image](https://github.com/user-attachments/assets/b4d635a2-41fe-4651-853b-0e8b496ef92e)
+
 
 
 ## 🛠️ Technologies Used
@@ -32,7 +34,8 @@ The application follows a well-structured **MVC architecture** using **Spring Bo
 - **Frontend**: JSP, Bootstrap, JavaScript
 - **Database**: MySQL
 - **Dependency Management**: Maven
-  ![image](https://github.com/user-attachments/assets/b4d635a2-41fe-4651-853b-0e8b496ef92e)
+  
+![image](https://github.com/user-attachments/assets/c1410224-3d3c-479d-a4e5-1b3402ad7746)
 
 
 ## 📂 Project Structure

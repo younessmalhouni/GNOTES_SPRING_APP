@@ -83,9 +83,6 @@ mvn spring-boot:run
 ```
 Access the interface at: `http://localhost:8082`
 
-## 📜 License
-This project is licensed under the MIT License.
-
 ---
 👨‍💻 *Developed by:* [**Youness Malhouni**](https://www.linkedin.com/in/youness-malhouni/)  
 

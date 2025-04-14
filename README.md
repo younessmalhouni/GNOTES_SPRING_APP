@@ -122,6 +122,11 @@ Access the interface at: `http://localhost:8082`
 
 ---
 
+Pour plus de détails sur ce projet, veuillez consulter le rapport complet :
+
+[📘 Rapport_Projet__Application_pour_la_gestion_des_notes.pdf](Rapport_Projet__Application_pour_la_gestion_des_notes.pdf)
+
+
 👨‍💻 *Developed by:* **[Youness Malhouni](https://www.linkedin.com/in/youness-malhouni/)**\
 
 

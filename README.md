@@ -122,9 +122,12 @@ Access the interface at: `http://localhost:8082`
 
 ---
 
-Pour plus de détails sur ce projet, veuillez consulter le rapport complet :
+## ⚠️
 
-[📘 Rapport_Projet__Application_pour_la_gestion_des_notes.pdf](Rapport_Projet__Application_pour_la_gestion_des_notes.pdf)
+For more details on this project, please refer to the following report:
+
+⚠️ [Project Report: Application for Grade Management](Rapport_Projet__Application_pour_la_gestion_des_notes.pdf)
+
 
 ---
 

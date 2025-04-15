@@ -58,10 +58,6 @@ The application follows a well-structured **MVC architecture** using **Spring Bo
 
 ![image](https://github.com/user-attachments/assets/bf0215bd-84ad-4901-a6af-1d8982cacf9c)
 
-![image](https://github.com/user-attachments/assets/79d724c4-75e2-4705-96c0-445a35184dad)
-
-![image](https://github.com/user-attachments/assets/c79ec7d2-1b5d-48d0-82f0-be218790bc12)
-
 ![image](https://github.com/user-attachments/assets/909e4369-1659-4b1c-a6e7-4f13aa525036)
 
 
